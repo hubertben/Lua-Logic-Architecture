@@ -28,7 +28,6 @@ function love.mousepressed(x, y, button)
     if button == 2 then
         
         for i = 1, #gates do
-            print(gates[i].name)
             if gates[i].collider:contains(x, y) then
                 new_Gate(
                     gates[i].name, 

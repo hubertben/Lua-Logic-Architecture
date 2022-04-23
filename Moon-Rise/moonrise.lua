@@ -116,7 +116,6 @@ function newButton(x, y, w, h, color, highlight_color, outline, internal_text, t
 
         button.is_highlighted = false
         ms = getMouseState()
-        print(ms.is_clicked)
 
         if ms.is_clicked == 0 then
             button.is_clicked = false

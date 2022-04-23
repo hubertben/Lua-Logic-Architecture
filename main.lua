@@ -104,6 +104,12 @@ CURRENT_MOUSE_DY = 0
 function love.draw()
     love.graphics.setBackgroundColor( rgb( 50, 50, 50 ) )
 
+    if CURRENTLY_TYPING then
+        local font1 = love.graphics.newFont(40)
+        love.graphics.setFont(font1)
+        love.graphics.print("" .. CURRENT_WORD, 10, 10)
+    end
+
     CIRCUIT_MENU:draw()
 
     for i = 1, #GLOBAL_WIRE_BANK do
