@@ -1,4 +1,26 @@
 
+MOUSE_STATE = {}
+function getMouseState()
+    MOUSE_STATE.x = CURRENT_MOUSE_X
+    MOUSE_STATE.y = CURRENT_MOUSE_Y
+    MOUSE_STATE.is_clicked = 0
+
+    if love.mouse.isDown(1) then
+        MOUSE_STATE.is_clicked = 1
+    end
+
+    if love.mouse.isDown(2) then
+        MOUSE_STATE.is_clicked = 2
+    end
+
+    if love.mouse.isDown(3) then
+        MOUSE_STATE.is_clicked = 3
+    end
+
+    return MOUSE_STATE
+end
+    
+
 function love.mousepressed(x, y, button)
 
     -- right click
@@ -80,7 +102,7 @@ function love.mousereleased(x, y, button)
 
         local g = gates[i]:updateHighlights(x, y)
 
-        if g then -- start new wire
+        if g and wire_in_progress then -- start new wire
             local wire_in_connection = wire_in_progress
             local wire_out_connection = g
 

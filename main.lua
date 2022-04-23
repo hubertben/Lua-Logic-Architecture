@@ -21,10 +21,16 @@ OUTPUT_NODES = {}
 
 gates = {}
 
+CIRCUIT_MENU = nil -- circuit_menu(0, HEIGHT - 100, WIDTH, HEIGHT, {0, 0, 0}, {"AND", "OR", "NOT", "XOR", "HALF ADDER"}, nil)
+
+
+
 function love.load()
 
     INPUT_NODES[#INPUT_NODES + 1] = new_IO_node(100, 300, 20)
 
+
+    
     
     new_Gate(
         "AND", 
@@ -66,6 +72,8 @@ function love.load()
         1
     )
 
+    CIRCUIT_MENU = circuit_menu(0, HEIGHT - 100, WIDTH, HEIGHT, {0, 0, 0}, {"AND", "OR", "NOT", "XOR"}, nil)
+
 end
 
 function love.update(dt)
@@ -77,6 +85,8 @@ function love.update(dt)
     for i = 1, #GLOBAL_WIRE_BANK do
         GLOBAL_WIRE_BANK[i]:updateConnection()
     end
+
+    CIRCUIT_MENU:update()
     
 
 end
@@ -94,6 +104,7 @@ CURRENT_MOUSE_DY = 0
 function love.draw()
     love.graphics.setBackgroundColor( rgb( 50, 50, 50 ) )
 
+    CIRCUIT_MENU:draw()
 
     for i = 1, #GLOBAL_WIRE_BANK do
         GLOBAL_WIRE_BANK[i]:draw()

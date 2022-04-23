@@ -155,3 +155,36 @@ function new_Gate(name, bitboard, color, x, y, input_size, output_size)
     gates[#gates + 1] = gate
     return gate
 end
+
+
+
+
+function new_gate_from_primitive(name, x, y)
+
+    -- search gates for matching name
+    local prim = nil
+    for i = 1, #gates do
+        if gates[i].name == name then
+            prim = gates[i]
+            break
+        end
+    end
+
+    if not prim then
+        print("ERROR: gate not found")
+        return
+    end
+
+
+    new_Gate(
+        name,
+        prim.bitboard,
+        prim.color,
+        x,
+        y,
+        prim.input_size,
+        prim.output_size
+    )
+
+    
+end

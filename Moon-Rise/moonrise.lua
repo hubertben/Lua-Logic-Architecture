@@ -95,6 +95,7 @@ function newButton(x, y, w, h, color, highlight_color, outline, internal_text, t
 
     button.is_clicked = false
     button.is_highlighted = false
+    button.lock_click = false
 
     button.draw = function()
         if button.is_highlighted then
@@ -112,19 +113,29 @@ function newButton(x, y, w, h, color, highlight_color, outline, internal_text, t
 
     button.update = function(dt)
 
-        local mouse_x, mouse_y = love.mouse.getPosition()
 
         button.is_highlighted = false
+        ms = getMouseState()
+        print(ms.is_clicked)
 
-        if mouse_x > button.x and mouse_x < button.x + button.w and mouse_y > button.y and mouse_y < button.y + button.h then
+        if ms.is_clicked == 0 then
+            button.is_clicked = false
+
+            button.lock_click = false
+        end
+    
+
+        if CURRENT_MOUSE_X > button.x and CURRENT_MOUSE_X < button.x + button.w and CURRENT_MOUSE_Y > button.y and CURRENT_MOUSE_Y < button.y + button.h then
+            
             button.is_highlighted = true
             
+            if not button.lock_click and ms.is_clicked == 1 then
+                button.is_clicked = true
+                function_on_click()
+                button.lock_click = true
+            end
         end
         
-        if button.is_clicked then
-            function_on_click()
-            button.is_clicked = false
-        end
     end
 
     return button
@@ -132,12 +143,24 @@ function newButton(x, y, w, h, color, highlight_color, outline, internal_text, t
 end
 
 
-function getMouseState()
-    local mouse_x, mouse_y = love.mouse.getPosition()
-    local mouse_state = {}
-    mouse_state.x = mouse_x
-    mouse_state.y = mouse_y
-    mouse_state.is_clicked = love.mouse.isDown(1)
-    return mouse_state
-end
+-- MOUSE_STATE = {}
+-- function getMouseState()
+--     MOUSE_STATE.x = CURRENT_MOUSE_X
+--     MOUSE_STATE.y = CURRENT_MOUSE_Y
+--     MOUSE_STATE.is_clicked = 0
+
+--     if love.mouse.isDown(1) then
+--         MOUSE_STATE.is_clicked = 1
+--     end
+
+--     if love.mouse.isDown(2) then
+--         MOUSE_STATE.is_clicked = 2
+--     end
+
+--     if love.mouse.isDown(3) then
+--         MOUSE_STATE.is_clicked = 3
+--     end
+
+--     return MOUSE_STATE
+-- end
     
