@@ -4,19 +4,14 @@ function new_Wire(inputNode, outputNode)
 
     print(inputNode.t .. " : " .. outputNode.t)
     
-    -- if inputNode.t == "O" then
-    --     wire.inputNode = outputNode
-    --     wire.outputNode = inputNode
-    -- else
+    if inputNode.t == "O" then
         wire.inputNode = inputNode
         wire.outputNode = outputNode
-    -- end
+    else
+        wire.inputNode = outputNode
+        wire.outputNode = inputNode
+    end
 
-
-    
-
-
-    
     
 
     wire.draw = function(self)
