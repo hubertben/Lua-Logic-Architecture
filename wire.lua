@@ -1,4 +1,10 @@
 function new_Wire(inputNode, outputNode)
+
+    if inputNode == nil or outputNode == nil or inputNode == outputNode then
+        return nil
+    end
+
+
     local wire = {}
     wire.value = 0
 

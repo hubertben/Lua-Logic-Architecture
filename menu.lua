@@ -26,28 +26,47 @@ function circuit_menu(x, y, w, h, color, items, parent)
     menu.parent = parent
     menu.visible = true
 
-    menu.buttons = {}
+    menu.init = function(self)
+        menu.buttons = {}
+        local part = seperate(x, y, w, h, 1, #menu.items)
+        displayTable(part)
 
-    local part = seperate(x, y, w, h, 1, #menu.items)
-    displayTable(part)
+        local max_font_size = 1000
 
-    for i = 1, #menu.items do
-        local button = newButton(
-            part[1][i].x, 
-            part[1][i].y,
-            part[1][i].w,
-            part[1][i].h,
-            {0.5, 0.5, 0.5}, 
-            {0.7, 0.7, 0.7}, 
-            {1, 1, 1}, 
-            menu.items[i], 
-            20,
-            -- new_gate_from_primitive(menu.items[i], x, y)
-            function()
-                new_gate_from_primitive(menu.items[i], part[1][i].x + 20, HEIGHT - 100 - part[1][i].h - 10)
+        local buffer = 2
+
+        for i = 1, #menu.items do
+            local size = (part[1][i].w/buffer)
+            if getMaxFontSize(menu.items[i], size) < max_font_size then
+                max_font_size = getMaxFontSize(menu.items[i], size)
             end
-        )
-        table.insert(menu.buttons, button)
+        end
+
+        for i = 1, #menu.items do
+
+
+            local button = newButton(
+                part[1][i].x, 
+                part[1][i].y,
+                part[1][i].w,
+                part[1][i].h,
+                {0.5, 0.5, 0.5}, 
+                {0.7, 0.7, 0.7}, 
+                {1, 1, 1}, 
+                menu.items[i], 
+                max_font_size,
+                -- new_gate_from_primitive(menu.items[i], x, y)
+                function()
+                    new_gate_from_primitive(menu.items[i], part[1][i].x + 20, HEIGHT - 100 - part[1][i].h - 10)
+                end
+            )
+            table.insert(menu.buttons, button)
+        end
+    end
+
+    menu.append_item = function(self, item)
+        table.insert(self.items, item)
+        self:init()
     end
 
     menu.update = function(self)

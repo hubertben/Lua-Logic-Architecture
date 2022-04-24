@@ -153,6 +153,7 @@ function new_Gate(name, bitboard, color, x, y, input_size, output_size)
     gate.init_nodes(gate)
 
     gates[#gates + 1] = gate
+
     return gate
 end
 
@@ -161,9 +162,8 @@ end
 
 function new_gate_from_primitive(name, x, y)
 
-    -- search gates for matching name
     local prim = nil
-    for i = 1, #gates do
+    for i = 1, #STORED_GATES do
         if gates[i].name == name then
             prim = gates[i]
             break
@@ -175,7 +175,6 @@ function new_gate_from_primitive(name, x, y)
         return
     end
 
-
     new_Gate(
         name,
         prim.bitboard,
@@ -185,6 +184,10 @@ function new_gate_from_primitive(name, x, y)
         prim.input_size,
         prim.output_size
     )
-
     
 end
+
+
+
+
+

@@ -1,5 +1,6 @@
 
 MOUSE_STATE = {}
+
 function getMouseState()
     MOUSE_STATE.x = CURRENT_MOUSE_X
     MOUSE_STATE.y = CURRENT_MOUSE_Y
@@ -23,10 +24,7 @@ end
 
 function love.mousepressed(x, y, button)
 
-    -- right click
-
     if button == 2 then
-        
         for i = 1, #gates do
             if gates[i].collider:contains(x, y) then
                 new_Gate(
@@ -40,10 +38,15 @@ function love.mousepressed(x, y, button)
                 )
             end
         end
-        
-        
-
     end
+
+    for i = 1, #INPUT_NODES do
+        if INPUT_NODES[i].collider:contains(x, y) then
+            INPUT_NODES[i].is_clicked = not INPUT_NODES[i].is_clicked
+        end
+    end
+
+    
 
 
     for i = 1, #gates do
@@ -52,7 +55,7 @@ function love.mousepressed(x, y, button)
 
         if g then -- start new wire
             gates[i].lock = false
-            wire_in_progress = g
+            ANCHOR_NODE_CURRENT = g
             break
         end
 
@@ -83,7 +86,7 @@ function love.mousemoved(x, y, dx, dy)
         local g = gates[i]:updateHighlights(x, y)
 
         if g then -- start new wire
-            wire_in_hover = g
+            ANCHOR_NODE_HOVER = g
         end
 
         if gates[i].lock then
@@ -101,8 +104,8 @@ function love.mousereleased(x, y, button)
 
         local g = gates[i]:updateHighlights(x, y)
 
-        if g and wire_in_progress then -- start new wire
-            local wire_in_connection = wire_in_progress
+        if g and ANCHOR_NODE_CURRENT then -- start new wire
+            local wire_in_connection = ANCHOR_NODE_CURRENT
             local wire_out_connection = g
 
             local wire = new_Wire(wire_in_connection, wire_out_connection)
@@ -114,6 +117,6 @@ function love.mousereleased(x, y, button)
         end
     end
     
-    wire_in_progress = false
-    wire_in_hover = false
+    ANCHOR_NODE_CURRENT = false
+    ANCHOR_NODE_HOVER = false
 end

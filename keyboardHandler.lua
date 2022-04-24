@@ -5,9 +5,6 @@ CURRENT_WORD = "_"
 
 function love.keypressed(key)
 
-    
-
-
     if key == "tab" then -- op code for starting a new word
         CURRENTLY_TYPING = not CURRENTLY_TYPING 
     end
@@ -16,24 +13,29 @@ function love.keypressed(key)
         letterTyped(key)
     end
 
-
-
     if key == "escape" then
         love.event.quit()
     end
 
     if key == "return" then
+
+        if CURRENT_WORD ~= "_" then
+           
         
+
+
+            CIRCUIT_MENU:append_item(string.sub(CURRENT_WORD, 1, #CURRENT_WORD - 1))
+        end 
     end
 
     if key == "space" then
         
-        if wire_in_progress then  
-            wire_in_progress.value = (wire_in_progress.value + 1) % 2
+        if ANCHOR_NODE_CURRENT then  
+            ANCHOR_NODE_CURRENT.value = (ANCHOR_NODE_CURRENT.value + 1) % 2
         end
 
-        if wire_in_hover then
-            wire_in_hover.value = (wire_in_hover.value + 1) % 2
+        if ANCHOR_NODE_HOVER then
+            ANCHOR_NODE_HOVER.value = (ANCHOR_NODE_HOVER.value + 1) % 2
         end
         
     end
@@ -45,14 +47,6 @@ function love.keypressed(key)
         end
 
     end
-
-    
-        
-
-    
-
-
-
 end
 
 valid_letters = {

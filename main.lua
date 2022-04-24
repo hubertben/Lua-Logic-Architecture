@@ -20,6 +20,7 @@ INPUT_NODES = {}
 OUTPUT_NODES = {}
 
 gates = {}
+STORED_GATES = {}
 
 CIRCUIT_MENU = nil -- circuit_menu(0, HEIGHT - 100, WIDTH, HEIGHT, {0, 0, 0}, {"AND", "OR", "NOT", "XOR", "HALF ADDER"}, nil)
 
@@ -27,8 +28,12 @@ CIRCUIT_MENU = nil -- circuit_menu(0, HEIGHT - 100, WIDTH, HEIGHT, {0, 0, 0}, {"
 
 function love.load()
 
-    INPUT_NODES[#INPUT_NODES + 1] = new_IO_node(100, 300, 20)
+    INPUT_NODES[#INPUT_NODES + 1] = new_IO_node(100, 300, 20, "I")
+    INPUT_NODES[#INPUT_NODES + 1] = new_IO_node(100, 400, 20, "I")
+    INPUT_NODES[#INPUT_NODES + 1] = new_IO_node(100, 500, 20, "I")
 
+    OUTPUT_NODES[#OUTPUT_NODES + 1] = new_IO_node(WIDTH - 100, 350, 20, "O")
+    OUTPUT_NODES[#OUTPUT_NODES + 1] = new_IO_node(WIDTH - 100, 450, 20, "O")
 
     
     
@@ -73,6 +78,7 @@ function love.load()
     )
 
     CIRCUIT_MENU = circuit_menu(0, HEIGHT - 100, WIDTH, HEIGHT, {0, 0, 0}, {"AND", "OR", "NOT", "XOR"}, nil)
+    CIRCUIT_MENU:init()
 
 end
 
@@ -92,8 +98,8 @@ function love.update(dt)
 end
 
 
-wire_in_progress = false
-wire_in_hover = false
+ANCHOR_NODE_CURRENT = false
+ANCHOR_NODE_HOVER = false
 
 CURRENT_MOUSE_X = 0
 CURRENT_MOUSE_Y = 0
@@ -105,19 +111,19 @@ function love.draw()
     love.graphics.setBackgroundColor( rgb( 50, 50, 50 ) )
 
     if CURRENTLY_TYPING then
-        local font1 = love.graphics.newFont(40)
+        local font1 = love.graphics.newFont(30)
         love.graphics.setFont(font1)
-        love.graphics.print("" .. CURRENT_WORD, 10, 10)
+        love.graphics.print("Construct Mode: " .. CURRENT_WORD, 10, 10)
+    else
+        local font1 = love.graphics.newFont(30)
+        love.graphics.setFont(font1)
+        love.graphics.print("Circuit Mode", 10, 10)
     end
 
     CIRCUIT_MENU:draw()
 
     for i = 1, #GLOBAL_WIRE_BANK do
         GLOBAL_WIRE_BANK[i]:draw()
-    end
-
-    for i = 1, #gates do
-        gates[i]:draw()
     end
 
     for i = 1, #INPUT_NODES do
@@ -128,9 +134,15 @@ function love.draw()
         OUTPUT_NODES[i]:draw()
     end
 
-    if wire_in_progress then
+    for i = 1, #gates do
+        gates[i]:draw()
+    end
+
+    
+
+    if ANCHOR_NODE_CURRENT then
         love.graphics.setLineWidth(3)
-        drawCurrentWire(wire_in_progress.x, wire_in_progress.y, CURRENT_MOUSE_X, CURRENT_MOUSE_Y, wire_in_progress.value)
+        drawCurrentWire(ANCHOR_NODE_CURRENT.x, ANCHOR_NODE_CURRENT.y, CURRENT_MOUSE_X, CURRENT_MOUSE_Y, ANCHOR_NODE_CURRENT.value)
     end
     
 end

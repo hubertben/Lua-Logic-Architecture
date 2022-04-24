@@ -69,7 +69,7 @@ end
 
 
 
-function new_IO_node(x, y, r)
+function new_IO_node(x, y, r, t)
 
     local node = {
 
@@ -78,12 +78,24 @@ function new_IO_node(x, y, r)
         x = x,
         y = y,
         r = r,
+        t = t, -- type, "I" or "O"
         wires = {},
         current_num_wires = 0,
+
+        is_clicked = false,
+
+        collider = CircleCollisionBox(x, y, r),
 
         draw = function(self)
             
             -- print(self.id .. ": " .. self.parent.name .. ": VALUE: " .. self.value .. ": " .. self.value == 1)
+
+            if self.is_clicked then
+                self.value = 1
+            else
+                self.value = 0
+            end
+            
 
             if self.value ~= 0 then
                 love.graphics.setColor(1, 0, 0)

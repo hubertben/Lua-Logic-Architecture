@@ -85,3 +85,17 @@ function checkNull(x)
     end
 end
     
+
+
+function getMaxFontSize(str, width)
+    local teststring = str
+    local fontsize = 10
+    local testFont = love.graphics.newFont(fontsize)
+    local textWidth = testFont:getWidth(teststring)
+    while textWidth < width do
+        fontsize = fontsize + 5
+        testFont = love.graphics.newFont(fontsize)
+        textWidth = testFont:getWidth(teststring)
+    end
+    return fontsize
+end
